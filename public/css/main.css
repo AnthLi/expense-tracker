@@ -1,0 +1,36 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0097a7;
+}
+
+#body-header {
+  font-family: "Cookie", cursive;
+  font-size: 80px;
+  font-weight: normal;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+#search-expense, #add-expense {
+  background-color: #00bcd4;
+  border-radius: 10px;
+  width: 80%;
+  height: 500px;
+  margin: 50px auto;
+}

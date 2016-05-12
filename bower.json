@@ -1,0 +1,10 @@
+{
+  "name": "expense-tracker",
+  "version": "0.1.0",
+  "dependencies": {
+    "angular": "latest",
+    "angular-animate": "latest",
+    "angular-touch": "latest",
+    "lodash": "latest"
+  }
+}
