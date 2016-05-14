@@ -9,7 +9,19 @@ import (
   "gopkg.in/pg.v4"
 )
 
+var db *pg.DB
+
 func main() {
+  db = connect()
+
+  // if err := deleteSchema(db); err != nil {
+  //   log.Println(err)
+  // }
+
+  if err := createSchema(db); err != nil {
+    log.Println(err)
+  }
+
   port := os.Getenv("PORT")
 
   if port == "" {
@@ -20,9 +32,12 @@ func main() {
 
   log.Println("Listening on:", portStr)
 
-  // Serve public files
+  // Serve static files
   http.Handle("/public/",
     http.StripPrefix("/public/", http.FileServer(http.Dir("./public/"))))
-  http.Handle("/", http.FileServer(http.Dir("./templates/")))
+
+  http.HandleFunc("/", index)
+  http.HandleFunc("/login", login)
+  http.HandleFunc("/signup", signup)
   http.ListenAndServe(portStr, nil)
 }

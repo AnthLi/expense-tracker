@@ -1,0 +1,30 @@
+<!-- Source: http://goo.gl/GxKNXk -->
+
+<div class="form">
+  <ul class="tab-group">
+    <li class="tab active"><a href="#login">Log In</a></li>
+    <li class="tab"><a href="#signup">Sign Up</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <h1>Welcome Back!</h1>
+
+    <form ng-submit="login()">
+      <div class="field-wrap">
+        <label>Email</label>
+        <input type="email" ng-model="form.email" autocomplete="off" required>
+      </div>
+
+      <div class="field-wrap">
+        <label>Password</label>
+        <input type="password" ng-model="form.password" autocomplete="off" required>
+      </div>
+
+      <p class="forgot">
+        <a href="#">Forgot Password?</a>
+      </p>
+
+      <button class="button button-block">Log In</button>
+    </form>
+  </div>
+</div>

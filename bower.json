@@ -4,7 +4,9 @@
   "dependencies": {
     "angular": "latest",
     "angular-animate": "latest",
+    "angular-route": "latest",
     "angular-touch": "latest",
+    "bootstrap": "latest",
     "lodash": "latest"
   }
 }

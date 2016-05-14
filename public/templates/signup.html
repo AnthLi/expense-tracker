@@ -1,0 +1,38 @@
+<!-- Source: http://goo.gl/GxKNXk -->
+
+<div class="form">
+  <ul class="tab-group">
+    <li class="tab"><a href="#login">Log In</a></li>
+    <li class="tab active"><a href="#signup">Sign Up</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <h1>Sign Up For Free!</h1>
+
+    <form ng-submit="signup()">
+      <div class="top-row">
+        <div class="field-wrap">
+          <label>First Name<span class="req">*</span></label>
+          <input type="text" ng-model="form.fname" autocomplete="off" required>
+        </div>
+
+        <div class="field-wrap">
+          <label>Last Name<span class="req">*</span></label>
+          <input type="text" ng-model="form.lname" autocomplete="off" required>
+        </div>
+      </div>
+
+      <div class="field-wrap">
+        <label>Email<span class="req">*</span></label>
+        <input type="email" ng-model="form.email" autocomplete="off" required>
+      </div>
+
+      <div class="field-wrap">
+        <label>Password<span class="req">*</span></label>
+        <input type="password" ng-model="form.password" autocomplete="off" required>
+      </div>
+
+      <button class="button button-block">Get Started</button>
+    </form>
+  </div>
+</div>
