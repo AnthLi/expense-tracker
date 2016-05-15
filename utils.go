@@ -2,23 +2,11 @@ package main
 
 import (
   "net/http"
-  "encoding/json"
   "strings"
   "html/template"
 
   "golang.org/x/crypto/bcrypt"
 )
-
-// Decode the requests's body for POST values
-func decodeReqJson(r *http.Request, i interface{}) error {
-  decoder := json.NewDecoder(r.Body)
-  err := decoder.Decode(i)
-  if err != nil {
-    return err
-  }
-
-  return nil;
-}
 
 // Encrypt passwords using the bcrypt library
 func encryptPassword(password string) (string, error) {
@@ -58,4 +46,12 @@ func handle(w http.ResponseWriter, r *http.Request, path string) {
   t := template.New(f).Delims("[[", "]]")
   t, _ = t.ParseFiles(path)
   t.Execute(w, nil)
+}
+
+// 404 handler
+func notFound(w http.ResponseWriter, r *http.Request, status int) {
+  w.WriteHeader(status)
+  if status == http.StatusNotFound {
+    handle(w, r, "public/templates/404.html")
+  }
 }

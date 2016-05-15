@@ -1,6 +1,6 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-app.controller('headerCtrl', function($scope) {
+app.controller('headerCtrl', function($scope, $location) {
   $scope.isActive = function (viewLocation) {
     return viewLocation === $location.path();
   };
@@ -42,18 +42,50 @@ app.controller('entryCtrl', function($scope, $http) {
   $scope.form = {};
 
   $scope.login = function() {
+    // Source: http://goo.gl/wPHJrE
     $http({
       method: 'POST',
       url: '/login',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      transformRequest: function(obj) {
+        var str = [];
+        for (var p in obj) {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+
+        return str.join("&");
+      },
       data: $scope.form
+    }).success(function(data) {
+      console.log(data);
+    }).error(function(data) {
+      console.log(data);
     });
   };
 
   $scope.signup = function() {
+    // Source: http://goo.gl/wPHJrE
     $http({
       method: 'POST',
       url: '/signup',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      transformRequest: function(obj) {
+        var str = [];
+        for (var p in obj) {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+
+        return str.join("&");
+      },
       data: $scope.form
+    }).success(function(data) {
+      console.log("Login successful!");
+    }).error(function(data) {
+      console.log(data);
     });
   };
 });

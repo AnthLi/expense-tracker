@@ -4,14 +4,12 @@ import (
   "fmt"
   "net/http"
   "log"
-
-  // "golang.org/x/crypto/bcrypt"
 )
 
 // Index handler
 func index(w http.ResponseWriter, r *http.Request) {
   if r.URL.Path != "/" {
-    errorHandler(w, r, http.StatusNotFound)
+    notFound(w, r, http.StatusNotFound)
     return
   }
 
@@ -23,32 +21,32 @@ func login(w http.ResponseWriter, r *http.Request) {
   switch r.Method {
     case "GET":
       if r.URL.Path != "/#/login" {
-        errorHandler(w, r, http.StatusNotFound)
+        notFound(w, r, http.StatusNotFound)
         return
       }
 
       http.Redirect(w, r, "/#/login", http.StatusSeeOther)
     case "POST":
-      var form struct {
-        Email    string
-        Password string
-      }
-      if err := decodeReqJson(r, &form); err != nil {
-        log.Println(err)
-      }
+      r.ParseForm()
 
-      acct, err := getAccount(db, form.Email)
+      acct, err := getAccount(db, r.Form["email"][0])
       if err != nil {
         log.Println(err)
-      }
-
-      // Account password and login password comparison
-      if !equivPassword(acct.Password, form.Password) {
-        fmt.Println("Password did not match!")
+        http.Error(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
         return
       }
 
-      fmt.Println("Login successful!")
+      // Account does not exist
+      if acct.Email == "" {
+        http.Error(w, "That account does not exist!", http.StatusOK)
+        return
+      }
+
+      // Account password and login password comparison
+      if !equivPassword(acct.Password, r.Form["password"][0]) {
+        http.Error(w, "Incorrect Password!", http.StatusOK)
+        return
+      }
   }
 }
 
@@ -57,37 +55,34 @@ func signup(w http.ResponseWriter, r *http.Request) {
   switch r.Method {
     case "GET":
       if r.URL.Path != "/#/signup" {
-        errorHandler(w, r, http.StatusNotFound)
+        notFound(w, r, http.StatusNotFound)
         return
       }
 
       http.Redirect(w, r, "/#/signup", http.StatusSeeOther)
     case "POST":
-      form := &Account{}
-      if err := decodeReqJson(r, form); err != nil {
-        log.Println(err)
-      }
+      r.ParseForm()
 
       // Encrypt the password before saving it to the database
-      hashedPassword, err := encryptPassword(form.Password)
+      hashedPassword, err := encryptPassword(r.Form["password"][0])
       if err != nil {
         log.Println(err)
+        http.Error(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
+        return
       }
 
-      // Replace the password and date with hashed and formated versions
-      form.Password = hashedPassword
+      form := &Account{
+        Fname: r.Form["fname"][0],
+        Lname: r.Form["lname"][0],
+        Email: r.Form["email"][0],
+        Password: hashedPassword,
+      }
 
       // Query the new Account into the database
       if err := addAccount(db, form); err != nil {
         log.Println(err)
+        http.Error(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
+        return
       }
-  }
-}
-
-// 404 handler
-func errorHandler(w http.ResponseWriter, r *http.Request, status int) {
-  w.WriteHeader(status)
-  if status == http.StatusNotFound {
-    handle(w, r, "public/templates/404.html")
   }
 }
