@@ -3,7 +3,7 @@ package main
 import (
   "fmt"
   "net/http"
-  "log"
+  // "log"
 )
 
 // Index handler
@@ -31,20 +31,19 @@ func login(w http.ResponseWriter, r *http.Request) {
 
       acct, err := getAccount(db, r.Form["email"][0])
       if err != nil {
-        log.Println(err)
-        http.Error(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
+        httpError(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
         return
       }
 
       // Account does not exist
       if acct.Email == "" {
-        http.Error(w, "That account does not exist!", http.StatusOK)
+        httpError(w, "That account does not exist!", http.StatusUnauthorized)
         return
       }
 
       // Account password and login password comparison
       if !equivPassword(acct.Password, r.Form["password"][0]) {
-        http.Error(w, "Incorrect Password!", http.StatusOK)
+        httpError(w, "Incorrect Password!", http.StatusUnauthorized)
         return
       }
   }
@@ -66,8 +65,18 @@ func signup(w http.ResponseWriter, r *http.Request) {
       // Encrypt the password before saving it to the database
       hashedPassword, err := encryptPassword(r.Form["password"][0])
       if err != nil {
-        log.Println(err)
-        http.Error(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
+        httpError(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
+        return
+      }
+
+      acct, err := getAccount(db, r.Form["email"][0])
+      if err != nil {
+        httpError(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
+        return
+      }
+
+      if acct.Email != "" {
+        httpError(w, "That email is already in use!", http.StatusUnauthorized)
         return
       }
 
@@ -80,8 +89,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 
       // Query the new Account into the database
       if err := addAccount(db, form); err != nil {
-        log.Println(err)
-        http.Error(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
+        httpError(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
         return
       }
   }

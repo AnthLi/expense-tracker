@@ -2,6 +2,7 @@ package main
 
 import (
   "net/http"
+  "log"
   "strings"
   "html/template"
 
@@ -46,6 +47,15 @@ func handle(w http.ResponseWriter, r *http.Request, path string) {
   t := template.New(f).Delims("[[", "]]")
   t, _ = t.ParseFiles(path)
   t.Execute(w, nil)
+}
+
+// Handle HTTP error replies to the request
+func httpError(w http.ResponseWriter, err string, status int) {
+  if status == http.StatusInternalServerError {
+    log.Println(err)
+  }
+
+  http.Error(w, err, status)
 }
 
 // 404 handler

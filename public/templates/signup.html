@@ -9,6 +9,10 @@
   <div class="tab-content">
     <h1>Sign Up For Free!</h1>
 
+    <div class="entry-error" ng-class="{active: signupSuccess == false}">
+      {{err}}
+    </div>
+
     <form ng-submit="signup()">
       <div class="top-row">
         <div class="field-wrap">

@@ -188,3 +188,18 @@
 .forgot a:hover {
   color: #179b64;
 }
+
+.entry-error {
+  overflow: hidden;
+  text-align: center;
+
+  color: red;
+  height: 0;
+
+  transition: all 0.25s linear;
+}
+
+.entry-error.active {
+  width: 100%;
+  height: 50px;
+}
