@@ -4,6 +4,8 @@ import (
   "fmt"
   "net/http"
   // "log"
+
+  "github.com/icza/session"
 )
 
 // Index handler
@@ -20,14 +22,23 @@ func index(w http.ResponseWriter, r *http.Request) {
 func login(w http.ResponseWriter, r *http.Request) {
   switch r.Method {
     case "GET":
+      if r.URL.Path == "/login" {
+        http.Redirect(w, r, "/#/login", http.StatusSeeOther)
+        return
+      }
+
       if r.URL.Path != "/#/login" {
         notFound(w, r, http.StatusNotFound)
         return
       }
-
-      http.Redirect(w, r, "/#/login", http.StatusSeeOther)
     case "POST":
       r.ParseForm()
+
+      sess := session.Get(r)
+      if sess != nil {
+        fmt.Println(sess)
+        return
+      }
 
       acct, err := getAccount(db, r.Form["email"][0])
       if err != nil {
@@ -41,12 +52,27 @@ func login(w http.ResponseWriter, r *http.Request) {
         return
       }
 
-      // Account password and login password comparison
+      // Account password does not match login password
       if !equivPassword(acct.Password, r.Form["password"][0]) {
         httpError(w, "Incorrect Password!", http.StatusUnauthorized)
         return
       }
+
+      // Successful login, create and add a new session
+      sess = session.NewSessionOptions(&session.SessOptions {
+        CAttrs: map[string]interface{}{"UserName": acct.Email},
+        Attrs:  map[string]interface{}{"Count": 1},
+      })
+
+      session.Add(sess, w)
+
+      fmt.Println("New session:", session.Get(r))
   }
+}
+
+// Logout handler
+func logout(w http.ResponseWriter, r *http.Request) {
+
 }
 
 // Sign-up handler

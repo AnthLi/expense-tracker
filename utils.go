@@ -7,6 +7,7 @@ import (
   "html/template"
 
   "golang.org/x/crypto/bcrypt"
+  // "github.com/icza/session"
 )
 
 // Encrypt passwords using the bcrypt library

@@ -38,6 +38,7 @@ func main() {
 
   http.HandleFunc("/", index)
   http.HandleFunc("/login", login)
+  // http.HandleFunc("/logout", logout)
   http.HandleFunc("/signup", signup)
   http.ListenAndServe(portStr, nil)
 }

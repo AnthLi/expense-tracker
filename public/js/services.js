@@ -33,6 +33,7 @@ app.factory('Entry', function($http) {
 
     postLoginInfo: function(form) {
       // Source: http://goo.gl/wPHJrE
+      // Send login POST values to the server
       return $http({
         method: 'POST',
         url: '/login',
@@ -63,6 +64,7 @@ app.factory('Entry', function($http) {
 
     postSignupInfo: function(form) {
       // Source: http://goo.gl/wPHJrE
+      // Send sign up POST values to the server
       return $http({
         method: 'POST',
         url: '/signup',
