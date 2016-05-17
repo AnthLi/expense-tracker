@@ -43,7 +43,7 @@
 
 #nav-auth-list {
   display: none;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 #nav-auth-list.active {
@@ -52,7 +52,7 @@
 
 #nav-logout form button {
   font-size: 20px;
-  margin-left: 3px;
+  margin-left: -12px;
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -83,7 +83,7 @@
   }
 
   #nav-logout form button {
+    margin-top: 13px;
     margin-left: 0px;
-    margin-top: 11px;
   }
 }

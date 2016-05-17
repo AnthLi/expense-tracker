@@ -2,7 +2,7 @@ var app = angular.module('expense-tracker.controllers', []);
 
 app.controller('mainCtrl', function($scope, $location) {
   // Make the user log in
-  if (localStorage.getItem('loggedIn') == 'false') {
+  if (!localStorage.loggedIn) {
     $location.path('/login');
   }
 });
@@ -13,12 +13,12 @@ app.controller('navCtrl', function($scope, $location, Nav) {
   };
 
   $scope.isLoggedIn = function() {
-    return localStorage.getItem('loggedIn') == 'true';
+    return localStorage.loggedIn === 'true';
   }
 
   $scope.logout = function() {
     Nav.logout().then(function(res) {
-      localStorage.setItem('loggedIn', false);
+      localStorage.removeItem("loggedIn");
       $location.path('/login');
     });
   }
@@ -34,8 +34,9 @@ app.controller('navCtrl', function($scope, $location, Nav) {
       var toggled = $(event.target).closest('.navbar-toggle').length;
       var expanded = $('#navbar-collapse[aria-expanded="true"]').length;
       var navList = $(event.target).closest('.navbar-nav li a').length;
+      var logout = $(event.target).closest('#nav-logout form button').length;
 
-      if (!navbar && !collapsed && !toggled && expanded || navList) {
+      if (!navbar && !collapsed && !toggled && expanded || navList || logout) {
         // Close the menu by triggering a click
         $('.navbar-toggle').click();
       }
@@ -59,7 +60,7 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
 
   $scope.login = function() {
     Entry.login($scope.form).then(function(res) {
-      localStorage.setItem('loggedIn', res.status);
+      localStorage.loggedIn = res.status;
       $scope.loggedIn = res.status;
       $scope.err = res.err;
 
