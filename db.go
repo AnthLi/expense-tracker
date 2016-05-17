@@ -73,6 +73,7 @@ func createSchema(db *pg.DB) error {
       eid    SERIAL PRIMARY KEY,
       aid    INTEGER REFERENCES Account(aid),
       name   TEXT NOT NULL,
+      date   DATE NOT NULL,
       amount MONEY NOT NULL
     )`,
   }

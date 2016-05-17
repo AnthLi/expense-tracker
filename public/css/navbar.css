@@ -33,6 +33,14 @@
   box-shadow: none;
 }
 
+#navbar-header, #nav-list, #nav-auth-list {
+  display: none;
+}
+
+#navbar-header.active, #nav-list.active, #nav-auth-list.active {
+  display: block;
+}
+
 #nav-list, #nav-auth-list {
   font-family: "Lato", sans-serif;
 
@@ -42,17 +50,12 @@
 }
 
 #nav-auth-list {
-  display: none;
   margin-top: 20px;
-}
-
-#nav-auth-list.active {
-  display: initial;
 }
 
 #nav-logout form button {
   font-size: 20px;
-  margin-left: -12px;
+  margin-left: 3px;
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -84,6 +87,6 @@
 
   #nav-logout form button {
     margin-top: 13px;
-    margin-left: 0px;
+    margin-right: 8px;
   }
 }
