@@ -7,6 +7,7 @@ import (
   "os"
 
   "gopkg.in/pg.v4"
+  "github.com/icza/session"
 )
 
 var db *pg.DB
@@ -30,7 +31,11 @@ func main() {
 
   portStr := fmt.Sprint(":", port)
 
-  log.Println("Listening on:", portStr)
+  // Initialize the session manager
+  session.Global = session.NewCookieManagerOptions(
+    session.NewInMemStore(),
+    &session.CookieMngrOptions{AllowHTTP: true},
+  )
 
   // Serve static files
   http.Handle("/public/",
@@ -38,7 +43,9 @@ func main() {
 
   http.HandleFunc("/", index)
   http.HandleFunc("/login", login)
-  // http.HandleFunc("/logout", logout)
+  http.HandleFunc("/logout", logout)
   http.HandleFunc("/signup", signup)
+
+  log.Println("Listening on:", portStr)
   http.ListenAndServe(portStr, nil)
 }

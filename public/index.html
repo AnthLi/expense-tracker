@@ -33,7 +33,7 @@
     <script src="public/js/services.js"></script>
   </head>
 
-  <header ng-controller="headerCtrl">
+  <header ng-controller="navCtrl">
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div id="header-brand" class="navbar-header navbar-brand">
@@ -57,7 +57,7 @@
 
           <ul id="nav-auth-list" class="nav navbar-nav navbar-right">
             <li id="nav-logout">
-              <form method="post" action="#logout">
+              <form ng-submit="logout()">
                 <button class="btn btn-default navbar-btn">Log Out</button>
               </form>
             </li>
@@ -65,30 +65,6 @@
         </div>
       </div>
     </nav>
-
-    <!-- <nav id="menu" class="menuAnimation" ng-show="toggled" ng-cloak>
-      <ul id="nav-list">
-        <li><a ng-class="{active: isActive('/')}" href="#/">Home</a></li>
-        <li><a ng-class="{active: isActive('/about')}" href="#about">About</a></li>
-        <li><a ng-class="{active: isActive('/contact')}" href="#contact">Contact</a></li>
-      </ul>
-
-      <ul id="nav-auth-list">
-        <li><a ng-class="{active: isActive('/signup')}" href="#signup">Sign Up</a></li>
-        <li><a ng-class="{active: isActive('/login')}" href="#login">Log In</a></li>
-        <li id="nav-logout">
-          <form method="post" action="#logout">
-            <button class="btn btn-default navbar-btn">Log Out</button>
-          </form>
-        </li>
-      </ul>
-      </nav>
-
-      <button id="navButton" class="buttonAnimation" ng-click="toggle()" ng-class="{clicked: state}">
-      <span id="navButton"></span>
-      <span id="navButton"></span>
-      <span id="navButton"></span>
-      </button> -->
   </header>
 
   <body ng-app="expense-tracker">

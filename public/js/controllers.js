@@ -1,9 +1,25 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-app.controller('headerCtrl', function($scope, $location) {
+var loggedIn;
+
+app.controller('mainCtrl', function($scope, $location) {
+  // Make the user log in
+  if (!loggedIn) {
+    $location.path('/login');
+  }
+});
+
+app.controller('navCtrl', function($scope, $location, Nav) {
   $scope.isActive = function(viewLocation) {
     return viewLocation === $location.path();
   };
+
+  $scope.logout = function() {
+    Nav.logout().then(function(res) {
+      loggedIn = false;
+      $location.path('/login');
+    });
+  }
 
   // Close the menu when clicking outside of it.
   // This only applies to when the dropdown button appears, which is when the
@@ -23,44 +39,43 @@ app.controller('headerCtrl', function($scope, $location) {
       }
     }
   });
-
-  // $scope.toggle = function() {
-  //   $scope.toggled = !$scope.toggled;
-  //   $scope.state = !$scope.state;
-  // };
-
-  // $(document).on('click', function(event) {
-  //   var length = $(event.target).closest('#menu').length;
-  //   if (!length && event.target.id !== 'navButton' && $scope.toggled) {
-  //     $scope.$apply(function() {
-  //       $scope.toggle();
-  //     });
-  //   }
-  // });
 });
 
-app.controller('mainCtrl', function($scope) {});
-
 // Controller shared between login and sign up pages
-app.controller('entryCtrl', function($scope, $http, Entry) {
-  Entry.formFunction();
+app.controller('entryCtrl', function($scope, $http, $location, Entry) {
+  Entry.formFieldAnimations();
 
   $scope.form = {};
-  $scope.loginSuccess;
-  $scope.signupSuccess;
+  $scope.loggedIn;
+  $scope.signedUp;
   $scope.err;
 
+  // Redirect to home since the user is already logged int
+  if (loggedIn) {
+    $location.path('/');
+  }
+
   $scope.login = function() {
-    Entry.postLoginInfo($scope.form).then(function(res) {
-      $scope.loginSuccess = res.status;
+    Entry.login($scope.form).then(function(res) {
+      $scope.loggedIn = loggedIn = res.status;
       $scope.err = res.err;
+
+      // User logged in, now redirect to home
+      if ($scope.loggedIn) {
+        $location.path('/');
+      }
     });
   }
 
   $scope.signup = function() {
-    Entry.postSignupInfo($scope.form).then(function(res) {
-      $scope.signupSuccess = res.status;
+    Entry.signup($scope.form).then(function(res) {
+      $scope.signedUp = res.status;
       $scope.err = res.err;
+
+      // Allow the user to login after signing up
+      if ($scope.signedUp) {
+        $location.path('/login');
+      }
     });
   }
 });

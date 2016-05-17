@@ -1,10 +1,23 @@
 var app = angular.module('expense-tracker.services', []);
 
+app.factory('Nav', function($http) {
+  return {
+    logout: function() {
+      return $http({
+        method: 'POST',
+        url: '/logout'
+      }).then(function(res) {
+        return res;
+      });
+    }
+  }
+});
+
 app.factory('Entry', function($http) {
   return {
     // Source: http://goo.gl/GxKNXk
     // Shift the field labels when user input is detected
-    formFunction: function() {
+    formFieldAnimations: function() {
       $('.form').find('input').on('keyup blur focus', function(e) {
         var $this = $(this);
         var label = $this.prev('label');
@@ -31,7 +44,7 @@ app.factory('Entry', function($http) {
       });
     },
 
-    postLoginInfo: function(form) {
+    login: function(form) {
       // Source: http://goo.gl/wPHJrE
       // Send login POST values to the server
       return $http({
@@ -62,7 +75,7 @@ app.factory('Entry', function($http) {
       });
     },
 
-    postSignupInfo: function(form) {
+    signup: function(form) {
       // Source: http://goo.gl/wPHJrE
       // Send sign up POST values to the server
       return $http({
