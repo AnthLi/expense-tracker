@@ -3,10 +3,13 @@ package main
 import (
   "fmt"
   "net/http"
-  // "log"
 
   "github.com/icza/session"
 )
+
+// Global so it doesn't get reinitialized after refresh
+var sess session.Session
+var sessionCount = 0
 
 // Index handler
 func index(w http.ResponseWriter, r *http.Request) {
@@ -47,10 +50,11 @@ func login(w http.ResponseWriter, r *http.Request) {
       return
     }
 
-    // Successful login, create and add a new session
-    sess := session.NewSessionOptions(&session.SessOptions {
+    // Successful login
+    sessionCount += 1
+    sess = session.NewSessionOptions(&session.SessOptions {
       CAttrs: map[string]interface{}{"UserName": acct.Email},
-      Attrs:  map[string]interface{}{"Count": 1},
+      Attrs:  map[string]interface{}{"Count": sessionCount},
     })
 
     session.Add(sess, w)
@@ -59,7 +63,6 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 // Logout handler
 func logout(w http.ResponseWriter, r *http.Request) {
-  sess := session.Get(r)
   if sess != nil {
     session.Remove(sess, w)
     sess = nil

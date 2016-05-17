@@ -55,7 +55,7 @@
             <li><a ng-class="{active: isActive('/contact')}" href="#contact">Contact</a></li>
           </ul>
 
-          <ul id="nav-auth-list" class="nav navbar-nav navbar-right">
+          <ul id="nav-auth-list" class="nav navbar-nav navbar-right" ng-class="{active: isLoggedIn()}">
             <li id="nav-logout">
               <form ng-submit="logout()">
                 <button class="btn btn-default navbar-btn">Log Out</button>

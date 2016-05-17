@@ -1,10 +1,8 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-var loggedIn;
-
 app.controller('mainCtrl', function($scope, $location) {
   // Make the user log in
-  if (!loggedIn) {
+  if (localStorage.getItem('loggedIn') == 'false') {
     $location.path('/login');
   }
 });
@@ -14,9 +12,13 @@ app.controller('navCtrl', function($scope, $location, Nav) {
     return viewLocation === $location.path();
   };
 
+  $scope.isLoggedIn = function() {
+    return localStorage.getItem('loggedIn') == 'true';
+  }
+
   $scope.logout = function() {
     Nav.logout().then(function(res) {
-      loggedIn = false;
+      localStorage.setItem('loggedIn', false);
       $location.path('/login');
     });
   }
@@ -50,14 +52,15 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   $scope.signedUp;
   $scope.err;
 
-  // Redirect to home since the user is already logged int
-  if (loggedIn) {
+  // Redirect to home since the user is already logged in
+  if ($scope.loggedIn) {
     $location.path('/');
   }
 
   $scope.login = function() {
     Entry.login($scope.form).then(function(res) {
-      $scope.loggedIn = loggedIn = res.status;
+      localStorage.setItem('loggedIn', res.status);
+      $scope.loggedIn = res.status;
       $scope.err = res.err;
 
       // User logged in, now redirect to home

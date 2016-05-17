@@ -42,7 +42,12 @@
 }
 
 #nav-auth-list {
+  display: none;
   margin-top: 30px;
+}
+
+#nav-auth-list.active {
+  display: initial;
 }
 
 #nav-logout form button {
