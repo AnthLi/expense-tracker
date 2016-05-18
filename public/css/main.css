@@ -9,6 +9,10 @@ body {
   background-color: #0097a7;
 }
 
+/**************/
+/* Header CSS */
+/**************/
+
 #header-brand, #body-header {
   cursor: default;
   font-family: "Cookie", cursive;
@@ -40,18 +44,22 @@ body {
   padding: 0;
 }
 
-.header {
+/*************/
+/* Views CSS */
+/*************/
+
+#header {
   text-align: center;
   font-family: "Lato", sans-serif;
 
   font-size: 30px;
   font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
 }
 
-#search-expense, #add-expense {
+.container .jumbotron {
   background-color: #00bcd4;
-  border-radius: 10px;
-  width: 80%;
-  height: 500px;
-  margin: 50px auto;
+  margin: 37px auto;
 }

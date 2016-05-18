@@ -1,3 +1,7 @@
+/**********************/
+/* Navigation Bar CSS */
+/**********************/
+
 .navbar {
   background-color: #112e3a;
   border-color: #112e3a;
@@ -33,15 +37,23 @@
   box-shadow: none;
 }
 
-#navbar-header, #nav-list, #nav-auth-list {
+.navbar-fixed-top .navbar-collapse {
+  max-height: none;
+}
+
+#nav-header, #nav-list, #nav-auth {
   display: none;
 }
 
-#navbar-header.active, #nav-list.active, #nav-auth-list.active {
+#nav-header.active, #nav-list.active, #nav-auth.active {
   display: block;
 }
 
-#nav-list, #nav-auth-list {
+/****************************/
+/* Navigation Bar Items CSS */
+/****************************/
+
+#nav-list, #nav-auth {
   font-family: "Lato", sans-serif;
 
   font-size: 20px;
@@ -49,40 +61,49 @@
   margin-top: 2px;
 }
 
-#nav-auth-list {
+#nav-auth {
   margin-top: 20px;
 }
 
-#nav-logout form button {
-  font-size: 20px;
-  margin-left: 3px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-#nav-list li a, #nav-auth-list li a, #nav-logout form button {
+#nav-list li a, #nav-auth li a, #nav-logout form button {
   border: none;
+  text-align: left;
 
   background-color: rgba(0, 0, 0, 0);
   color: #ffffff;
+  width: 100%;
+  margin-bottom: 30px;
 
   transition: all 0.25s linear;
 }
 
-#nav-list li a.active, #nav-auth-list li a.active {
+#nav-list li a.active, #nav-auth li a.active {
   color: #1ec882;
 }
 
-#nav-list li a:hover, #nav-auth-list li a:hover, #nav-logout form button:hover {
+#nav-list li a:hover, #nav-auth li a:hover, #nav-logout form button:hover {
   background-color: rgba(0, 0, 0, 0);
   color: #179b64;
 
   transition: all 0.25s linear;
 }
 
+#nav-logout form button {
+  font-size: 20px;
+  margin-top: -14px;
+  margin-left: 3px;
+  outline: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 @media (min-width: 768px) {
-  #nav-auth-list {
+  #nav-auth {
     margin-top: 0;
+  }
+
+  #nav-list li a, #nav-auth li a, #nav-logout form button {
+    margin-bottom: 0;
   }
 
   #nav-logout form button {

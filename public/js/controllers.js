@@ -32,7 +32,7 @@ app.controller('navCtrl', function($scope, $location, Nav) {
       var navbar = $(event.target).closest('.navbar').length;
       var collapsed = $(event.target).closest('.navbar-collapse').length;
       var toggled = $(event.target).closest('.navbar-toggle').length;
-      var expanded = $('#navbar-collapse[aria-expanded="true"]').length;
+      var expanded = $('.navbar-collapse[aria-expanded="true"]').length;
       var navList = $(event.target).closest('.navbar-nav li a').length;
       var logout = $(event.target).closest('#nav-logout form button').length;
 

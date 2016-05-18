@@ -40,34 +40,34 @@
           ET
         </div>
 
-        <div class="navbar-header" ng-class="{active: isLoggedIn()}">
-          <button type="button" id="navbar-toggle" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <div id="nav-header" class="navbar-header" ng-class="{active: isLoggedIn()}">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
         </div>
 
-        <div id="navbar-collapse" class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse">
           <ul id="nav-list" class="nav navbar-nav navbar-left" ng-class="{active: isLoggedIn()}">
             <li>
-              <a ng-class="{active: isActive('/')}" href="/">
-                <span class="fa fa-list-ul"></span> Recent Expenses
+              <a ng-class="{active: isActive('/')}" href="#/">
+                <span class="fa fa-home"></span> Home
               </a>
             </li>
             <li>
               <a ng-class="{active: isActive('/search')}" href="#search">
-                <span class="fa fa-search"></span> Search Expenses
+                <span class="fa fa-search"></span> Search Past Expenses
               </a>
             </li>
             <li>
               <a ng-class="{active: isActive('/add')}" href="#add">
-                <span class="fa fa-plus-square-o"></span> Add Expenses
+                <span class="fa fa-plus-square-o"></span> Add an Expense
               </a>
             </li>
           </ul>
 
-          <ul id="nav-auth-list" class="nav navbar-nav navbar-right" ng-class="{active: isLoggedIn()}">
+          <ul id="nav-auth" class="nav navbar-nav navbar-right" ng-class="{active: isLoggedIn()}">
             <li id="nav-logout">
               <form ng-submit="logout()">
                 <button class="btn btn-default navbar-btn">
