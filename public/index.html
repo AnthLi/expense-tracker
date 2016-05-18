@@ -50,14 +50,29 @@
 
         <div id="navbar-collapse" class="collapse navbar-collapse">
           <ul id="nav-list" class="nav navbar-nav navbar-left" ng-class="{active: isLoggedIn()}">
-            <li><a ng-class="{active: isActive('/add')}" href="#/add">Add an Expense</a></li>
-            <li><a ng-class="{active: isActive('/search')}" href="#/search">Search Expenses</a></li>
+            <li>
+              <a ng-class="{active: isActive('/')}" href="/">
+                <span class="fa fa-list-ul"></span> Recent Expenses
+              </a>
+            </li>
+            <li>
+              <a ng-class="{active: isActive('/search')}" href="#search">
+                <span class="fa fa-search"></span> Search Expenses
+              </a>
+            </li>
+            <li>
+              <a ng-class="{active: isActive('/add')}" href="#add">
+                <span class="fa fa-plus-square-o"></span> Add Expenses
+              </a>
+            </li>
           </ul>
 
           <ul id="nav-auth-list" class="nav navbar-nav navbar-right" ng-class="{active: isLoggedIn()}">
             <li id="nav-logout">
               <form ng-submit="logout()">
-                <button class="btn btn-default navbar-btn">Log Out</button>
+                <button class="btn btn-default navbar-btn">
+                  <span class="fa fa-sign-out"></span> Log Out
+                </button>
               </form>
             </li>
           </ul>

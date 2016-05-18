@@ -15,9 +15,9 @@ var db *pg.DB
 func main() {
   db = connect()
 
-  // if err := deleteSchema(db); err != nil {
-  //   log.Println(err)
-  // }
+  if err := deleteSchema(db); err != nil {
+    log.Println(err)
+  }
 
   if err := createSchema(db); err != nil {
     log.Println(err)

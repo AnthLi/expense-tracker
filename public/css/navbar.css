@@ -1,5 +1,5 @@
 .navbar {
-  background-color: rgba(17, 46, 58, 0.9);
+  background-color: #112e3a;
   border-color: #112e3a;
   border-radius: 0;
 }
@@ -13,13 +13,13 @@
 }
 
 .navbar-default .navbar-toggle:hover {
-  background-color: rgba(23, 155, 100, 0.7);
+  background-color: #179b64;
 
   transition: all 0.25s linear;
 }
 
 .navbar-default .navbar-toggle:focus {
-  background-color: rgba(30, 200, 130, 0.7);
+  background-color: #1ec882;
 }
 
 .navbar-default .navbar-toggle .icon-bar {

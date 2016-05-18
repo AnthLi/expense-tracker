@@ -32,15 +32,15 @@ app.config(['$routeProvider', function($routeProvider) {
       controller: 'entryCtrl'
     })
 
-    // Add expenses page
-    .when('/add', {
-      templateUrl: '/public/templates/add.html',
-      controller: 'addCtrl'
-    })
-
     // Search expenses page
     .when('/search', {
       templateUrl: '/public/templates/search.html',
       controller: 'searchCtrl'
+    })
+
+    // Add expenses page
+    .when('/add', {
+      templateUrl: '/public/templates/add.html',
+      controller: 'addCtrl'
     });
 }]);

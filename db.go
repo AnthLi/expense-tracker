@@ -120,8 +120,8 @@ func allAccounts(db *pg.DB) ([]Account, error) {
 
 // Add an expense to a specific account
 func addExpense(db *pg.DB, expense *Expense) error {
-  q := `INSERT INTO Expense (aid, name, amount)
-    VALUES (?aid, ?name, ?amount)`
+  q := `INSERT INTO Expense (name, date, amount)
+    VALUES (?name, ?date, ?amount)`
 
   _, err := db.Exec(q, expense)
   if err != nil {

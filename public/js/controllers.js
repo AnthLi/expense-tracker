@@ -84,10 +84,10 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   }
 });
 
-app.controller('addCtrl', function($scope) {
+app.controller('searchCtrl', function($scope) {
 
 });
 
-app.controller('searchCtrl', function($scope) {
+app.controller('addCtrl', function($scope) {
 
 });
