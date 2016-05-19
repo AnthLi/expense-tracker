@@ -19,7 +19,7 @@ func index(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  handle(w, "public/index.html", nil)
+  render(w, "public/index.html", nil)
 }
 
 // Login handler

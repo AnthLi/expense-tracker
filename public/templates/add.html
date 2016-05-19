@@ -1,7 +1,28 @@
 <div id="add-expense" class="container">
   <div class="jumbotron">
     <h1 id="header">Add an Expense</h1>
+    {{expense}}
+    <form ng-submit="addExpense()">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+      </table>
 
 
+      <div class="form-group row">
+        <label class="col-md-2 form-control-label">Name of Expense</label>
+
+        <div class="col-md-10">
+          <input type="text" class="form-control" ng-model="expense.name">
+        </div>
+      </div>
+
+
+    </form>
   </div>
 </div>

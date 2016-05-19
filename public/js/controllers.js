@@ -1,7 +1,5 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-console.log(sessionStorage);
-
 app.controller('homeCtrl', function($scope, $location) {
   // Make the user log in
   if (!sessionStorage.loggedIn) {
@@ -90,5 +88,20 @@ app.controller('searchCtrl', function($scope, Search) {
 });
 
 app.controller('addCtrl', function($scope, Add) {
+  $scope.expenses = [{
+    {
+      name: "",
+      amount: "",
+      date: ""
+    }
+  }];
 
+  $scope.addExpenses = function() {
+    _.each($scope.expenses, function(e) {
+      console.log(e);
+    })
+    // Add.addExpense($scope.expenses).then(function(res) {
+    //   console.log(res);
+    // })
+  }
 });

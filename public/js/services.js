@@ -44,7 +44,7 @@ app.factory('Entry', function($http) {
       });
     },
 
-    login: function(form) {
+    login: function(credentials) {
       // Source: http://goo.gl/wPHJrE
       // Send login POST values to the server
       return $http({
@@ -61,7 +61,7 @@ app.factory('Entry', function($http) {
 
           return str.join("&");
         },
-        data: form
+        data: credentials
       }).then(function(res) {
         return {
           status: true,
@@ -117,5 +117,9 @@ app.factory('Search', function($http) {
 });
 
 app.factory('Add', function($http) {
+  return {
+    addExpense: function(form) {
 
+    }
+  }
 });
