@@ -3,6 +3,7 @@ package main
 import (
   "fmt"
   "net/http"
+  "strings"
 
   "github.com/icza/session"
 )
@@ -18,7 +19,7 @@ func index(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  handle(w, r, "public/index.html")
+  handle(w, "public/index.html", nil)
 }
 
 // Login handler
@@ -32,7 +33,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 
     http.Redirect(w, r, "/#/login", http.StatusSeeOther)
   } else if req == "POST" {
-    acct, err := getAccount(db, r.FormValue("email"))
+    acct, err := getAccount(db, strings.ToLower(r.FormValue("email")))
     if err != nil {
       httpError(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
       return
@@ -87,7 +88,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
       return
     }
 
-    acct, err := getAccount(db, r.FormValue("email"))
+    acct, err := getAccount(db, strings.ToLower(r.FormValue("email")))
     if err != nil {
       httpError(w, fmt.Sprint("%q\n", err), http.StatusInternalServerError)
       return
@@ -101,7 +102,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
     form := &Account{
       Fname: r.FormValue("fname"),
       Lname: r.FormValue("lname"),
-      Email: r.FormValue("email"),
+      Email: strings.ToLower(r.FormValue("email")),
       Password: hashedPassword,
     }
 

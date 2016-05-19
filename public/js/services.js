@@ -107,3 +107,15 @@ app.factory('Entry', function($http) {
     }
   }
 });
+
+app.factory('Home', function($http) {
+
+});
+
+app.factory('Search', function($http) {
+
+});
+
+app.factory('Add', function($http) {
+
+});

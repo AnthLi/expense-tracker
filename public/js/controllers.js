@@ -1,8 +1,10 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-app.controller('mainCtrl', function($scope, $location) {
+console.log(sessionStorage);
+
+app.controller('homeCtrl', function($scope, $location) {
   // Make the user log in
-  if (!localStorage.loggedIn) {
+  if (!sessionStorage.loggedIn) {
     $location.path('/login');
   }
 });
@@ -13,12 +15,12 @@ app.controller('navCtrl', function($scope, $location, Nav) {
   };
 
   $scope.isLoggedIn = function() {
-    return localStorage.loggedIn === 'true';
+    return sessionStorage.loggedIn === 'true';
   }
 
   $scope.logout = function() {
     Nav.logout().then(function(res) {
-      localStorage.removeItem("loggedIn");
+      sessionStorage.loggedIn = false;
       $location.path('/login');
     });
   }
@@ -54,14 +56,13 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   $scope.err;
 
   // Redirect to home since the user is already logged in
-  if ($scope.loggedIn) {
+  if (sessionStorage.loggedIn === 'true') {
     $location.path('/');
   }
 
   $scope.login = function() {
     Entry.login($scope.form).then(function(res) {
-      localStorage.loggedIn = res.status;
-      $scope.loggedIn = res.status;
+      $scope.loggedIn = sessionStorage.loggedIn = res.status;
       $scope.err = res.err;
 
       // User logged in, now redirect to home
@@ -84,10 +85,10 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   }
 });
 
-app.controller('searchCtrl', function($scope) {
+app.controller('searchCtrl', function($scope, Search) {
 
 });
 
-app.controller('addCtrl', function($scope) {
+app.controller('addCtrl', function($scope, Add) {
 
 });

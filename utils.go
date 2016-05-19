@@ -35,18 +35,11 @@ func formatDate(date string) string {
 }
 
 // Handle exceution of parsed templates
-func handle(w http.ResponseWriter, r *http.Request, path string) {
-  // Parse the file name from the relative path
-  f := path
-  fIndex := strings.LastIndex(path, "/")
-  if fIndex > 0 {
-    f = path[fIndex + 1:]
-  }
-
+func handle(w http.ResponseWriter, path string, data interface{}) {
   // Resolve AngularJS template conflict and render the template
   t := template.New(f).Delims("[[", "]]")
-  t, _ = t.ParseFiles(path)
-  t.Execute(w, nil)
+  t, _ = template.ParseFiles(path)
+  t.ExecuteTemplate(w, t.Name(), data)
 }
 
 // Handle HTTP error replies to the request
@@ -62,6 +55,6 @@ func httpError(w http.ResponseWriter, err string, status int) {
 func notFound(w http.ResponseWriter, r *http.Request, status int) {
   w.WriteHeader(status)
   if status == http.StatusNotFound {
-    handle(w, r, "public/templates/404.html")
+    handle(w, "public/templates/404.html", nil)
   }
 }

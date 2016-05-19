@@ -17,7 +17,7 @@ app.config(['$routeProvider', function($routeProvider) {
     // Home page
     .when('/', {
       templateUrl: '/public/templates/home.html',
-      controller: 'mainCtrl'
+      controller: 'homeCtrl'
     })
 
     // Login page
