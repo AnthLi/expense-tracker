@@ -89,14 +89,24 @@ app.controller('searchCtrl', function($scope, Search) {
 
 app.controller('addCtrl', function($scope, Add) {
   $scope.expenses = [{
-    {
+    name: "",
+    amount: "",
+    date: ""
+  }];
+
+  $scope.add = function() {
+    $scope.expenses.push({
       name: "",
       amount: "",
       date: ""
-    }
-  }];
+    });
+  }
 
-  $scope.addExpenses = function() {
+  $scope.remove = function() {
+    $scope.expenses.pop();
+  }
+
+  $scope.submitExpenses = function() {
     _.each($scope.expenses, function(e) {
       console.log(e);
     })

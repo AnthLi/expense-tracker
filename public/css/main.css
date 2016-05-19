@@ -63,3 +63,11 @@ body {
   background-color: #00bcd4;
   margin: 37px auto;
 }
+
+#expenses, #expenses thead tr th {
+  text-align: center;
+}
+
+#expenses {
+  margin-top: 30px;
+}
