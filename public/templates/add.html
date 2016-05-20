@@ -1,8 +1,6 @@
 <div id="add-expense" class="container">
   <div class="jumbotron">
-    <h1 id="header">Add an Expense</h1>
-    {{expenses}}
-    <form ng-submit="submitExpense()">
+    <form ng-submit="submit()">
       <table id="expenses" class="table">
         <thead>
           <tr>
@@ -15,17 +13,25 @@
         <tbody>
           <tr ng-repeat="expense in expenses">
             <td>
-              <input type="text" class="form-control" placeholder="Name" ng-model="expense.name">
+              <input type="text" class="form-control" required ng-model="expense.name">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="Amount" ng-model="expense.amount">
+              <input type="text" class="form-control" required ng-model="expense.amount">
             </td>
             <td>
-              <input type="date" class="form-control" ng-model="expense.date">
+              <input type="date" class="form-control" required ng-model="expense.date">
+            </td>
+            <td>
+              <i class="remove-expense fa fa-times" ng-click="remove(expense.index)"></i>
             </td>
           </tr>
         </tbody>
       </table>
+
+      <div class="text-center">
+        <input class="expense-button btn btn-primary btn-md" value="Add" ng-click="add()">
+        <button class="expense-button btn btn-primary btn-md">Submit</button>
+      </div>
     </form>
   </div>
 </div>

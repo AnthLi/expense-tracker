@@ -1,6 +1,6 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-app.controller('homeCtrl', function($scope, $location) {
+app.controller('homeCtrl', function($scope, $http, $location) {
   // Make the user log in
   if (!sessionStorage.loggedIn) {
     $location.path('/login');
@@ -83,35 +83,47 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   }
 });
 
-app.controller('searchCtrl', function($scope, Search) {
+app.controller('searchCtrl', function($scope, $location, Search) {
 
 });
 
-app.controller('addCtrl', function($scope, Add) {
+app.controller('addCtrl', function($scope, $location, Add) {
   $scope.expenses = [{
-    name: "",
-    amount: "",
-    date: ""
+    name: '',
+    amount: '',
+    date: '',
+    index: 0
   }];
 
   $scope.add = function() {
     $scope.expenses.push({
-      name: "",
-      amount: "",
-      date: ""
+      name: '',
+      amount: '',
+      date: '',
+      index: $scope.expenses.length
     });
   }
 
-  $scope.remove = function() {
-    $scope.expenses.pop();
+  $scope.remove = function(index) {
+    var newExpenses = [];
+
+    _.each($scope.expenses, function(expense) {
+      if (expense.index != index) {
+        newExpenses.push(expense);
+      }
+    });
+
+    $scope.expenses = newExpenses;
   }
 
-  $scope.submitExpenses = function() {
-    _.each($scope.expenses, function(e) {
-      console.log(e);
+  $scope.submit = function() {
+    _.each($scope.expenses, function(expense) {
+      Add.submitExpense(expense).then(function(res) {
+        if (res && res.indexOf('Please log in!') > -1) {
+          sessionStorage.loggedIn = false;
+          $location.path('/login');
+        }
+      });
     })
-    // Add.addExpense($scope.expenses).then(function(res) {
-    //   console.log(res);
-    // })
   }
 });

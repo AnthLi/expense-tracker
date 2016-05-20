@@ -1,3 +1,9 @@
+* {
+  font-family: "Lato", sans-serif;
+
+  font-weight: 300;
+}
+
 html, body {
   width: 100%;
   height: 100%;
@@ -19,7 +25,7 @@ body {
   font-weight: normal;
 
   font-weight: 300;
-  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.5);
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -52,22 +58,14 @@ body {
   text-align: center;
   font-family: "Lato", sans-serif;
 
-  font-size: 30px;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 300;
   margin-top: 0;
   margin-bottom: 0;
   padding: 0;
 }
 
 .container .jumbotron {
-  background-color: #00bcd4;
+  background-color: #00838f;
   margin: 37px auto;
-}
-
-#expenses, #expenses thead tr th {
-  text-align: center;
-}
-
-#expenses {
-  margin-top: 30px;
 }

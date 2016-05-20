@@ -66,12 +66,12 @@ app.factory('Entry', function($http) {
         return {
           status: true,
           err: null
-        }
+        };
       }, function(err) {
         return {
           status: false,
           err: err.data
-        }
+        };
       });
     },
 
@@ -97,29 +97,46 @@ app.factory('Entry', function($http) {
         return {
           status: true,
           err: null
-        }
+        };
       }, function(err) {
         return {
           status: false,
           err: err.data
-        }
+        };
       });
     }
   }
 });
 
-app.factory('Home', function($http) {
-
-});
-
 app.factory('Search', function($http) {
+  return {
 
+  }
 });
 
 app.factory('Add', function($http) {
   return {
-    addExpense: function(form) {
+    submitExpense: function(expense) {
+      return $http({
+        method: 'POST',
+        url: '/add',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        transformRequest: function(obj) {
+          var str = [];
+          for (var p in obj) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+          }
 
+          return str.join("&");
+        },
+        data: expense
+      }).then(function(res) {
+        return null;
+      }, function(err) {
+        return err.data;
+      });
     }
   }
 });

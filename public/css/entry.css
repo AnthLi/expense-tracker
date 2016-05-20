@@ -5,10 +5,8 @@
 */
 
 .form {
-  font-family: "Lato", sans-serif;
-
-  background: #112e3a;
-  box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+  background-color: #112e3a;
+  box-shadow: 0 4px 10px 4px rgba(0, 0, 0, 0.5);
   border-radius: 6px;
   font-weight: 400;
   max-width: 600px;
@@ -36,9 +34,10 @@
   text-decoration: none;
   text-align: center;
 
-  background: #37474f;
+  background-color: #37474f;
   color: #999999;
   font-size: 20px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
   width: 50%;
   padding: 15px;
 
@@ -46,12 +45,12 @@
 }
 
 .tab-group li a:hover {
-  background: #179b64;
+  background-color: #179b64;
   color: #ffffff;
 }
 
 .tab-group .active a {
-  background: #1ec882;
+  background-color: #1ec882;
   color: #ffffff;
 }
 
@@ -153,13 +152,14 @@
   outline: none;
   text-transform: uppercase;
 
-  background: #1ec882;
+  background-color: #1ec882;
   border: 0;
   border-radius: 0;
   color: #ffffff;
   font-size: 20px;
   font-weight: 600;
   letter-spacing: 3px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
   padding: 15px 0;
 
   -webkit-appearance: none;
@@ -167,7 +167,7 @@
 }
 
 .button:hover, .button:focus {
-  background: #179b64;
+  background-color: #179b64;
 }
 
 .button-block {
@@ -185,6 +185,7 @@
 
   color: #1ec882;
   font-size: 14px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 
   transition: all 0.25s linear;
 }

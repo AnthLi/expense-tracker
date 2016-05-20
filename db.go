@@ -21,6 +21,7 @@ type Expense struct {
   Aid    int
   Name   string
   Amount string
+  Date   string
 }
 
 // Establish a connection to the database
@@ -120,8 +121,8 @@ func allAccounts(db *pg.DB) ([]Account, error) {
 
 // Add an expense to a specific account
 func addExpense(db *pg.DB, expense *Expense) error {
-  q := `INSERT INTO Expense (name, date, amount)
-    VALUES (?name, ?date, ?amount)`
+  q := `INSERT INTO Expense (aid, name, amount, date)
+    VALUES (?aid, ?name, ?amount, ?date)`
 
   _, err := db.Exec(q, expense)
   if err != nil {
