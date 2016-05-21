@@ -10,18 +10,18 @@ import (
 
 type Account struct {
   Aid      int
-  Fname    string
-  Lname    string
-  Email    string
+  Fname    string `json:"fname"`
+  Lname    string `json:"lname"`
+  Email    string `json:"email"`
   Password string
 }
 
 type Expense struct {
   Eid    int
   Aid    int
-  Name   string
-  Amount string
-  Date   string
+  Name   string `json:"name"`
+  Amount string `json:"amount"`
+  Date   string `json:"date"`
 }
 
 // Establish a connection to the database
@@ -111,6 +111,15 @@ func getAccount(db *pg.DB, email string) (Account, error) {
   return account, err
 }
 
+// Get the account info, name and email
+func getAccountInfo(db *pg.DB, email string) (Account, error) {
+  var account Account
+  q := `SELECT fname, lname, email FROM Account WHERE email = ?`
+  _, err := db.Query(&account, q, email)
+
+  return account, err
+}
+
 // Retrieve all accounts
 func allAccounts(db *pg.DB) ([]Account, error) {
   var accounts []Account
@@ -132,8 +141,8 @@ func addExpense(db *pg.DB, expense *Expense) error {
   return nil
 }
 
-// Search a expense based on the email
-func getExepnse(db *pg.DB, email string) (Expense, error) {
+// Search expenses based on user requirements
+func getExpenses(db *pg.DB, email string) (Expense, error) {
   var expense Expense
   q := `SELECT * FROM Expense e, Account a WHERE a.email = ? AND e.aid = a.aid`
   _, err := db.Query(&expense, q, email)

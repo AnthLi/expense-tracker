@@ -1,10 +1,22 @@
 var app = angular.module('expense-tracker.controllers', []);
 
 app.controller('homeCtrl', function($scope, $http, $location) {
+  $scope.fname;
+
   // Make the user log in
   if (!sessionStorage.loggedIn) {
     $location.path('/login');
   }
+
+  $http({
+    method: 'GET',
+    url: '/accounts',
+    params: {email: sessionStorage.userEmail}
+  }).then(function(res) {
+    $scope.fname = res.data.fname;
+  }, function(err) {
+    console.log(err.data);
+  });
 });
 
 app.controller('navCtrl', function($scope, $location, Nav) {
@@ -17,8 +29,8 @@ app.controller('navCtrl', function($scope, $location, Nav) {
   }
 
   $scope.logout = function() {
-    Nav.logout().then(function(res) {
-      sessionStorage.loggedIn = false;
+    Nav.logout().then(function() {
+      sessionStorage.removeItem("loggedIn");
       $location.path('/login');
     });
   }
@@ -65,6 +77,7 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
 
       // User logged in, now redirect to home
       if ($scope.loggedIn) {
+        sessionStorage.userEmail = $scope.form.email;
         $location.path('/');
       }
     });
@@ -118,12 +131,7 @@ app.controller('addCtrl', function($scope, $location, Add) {
 
   $scope.submit = function() {
     _.each($scope.expenses, function(expense) {
-      Add.submitExpense(expense).then(function(res) {
-        if (res && res.indexOf('Please log in!') > -1) {
-          sessionStorage.loggedIn = false;
-          $location.path('/login');
-        }
-      });
+      Add.submitExpense(expense);
     })
   }
 });

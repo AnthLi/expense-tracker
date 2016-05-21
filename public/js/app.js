@@ -11,7 +11,7 @@ app.constant('_',
   window._
 );
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(function($routeProvider, $locationProvider) {
   $routeProvider
 
     // Home page
@@ -43,4 +43,6 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: '/public/templates/add.html',
       controller: 'addCtrl'
     });
-}]);
+
+  $locationProvider.html5Mode(true);
+});

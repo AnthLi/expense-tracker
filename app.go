@@ -43,10 +43,12 @@ func main() {
 
   http.HandleFunc("/", index)
   http.HandleFunc("/login", login)
-  http.HandleFunc("/logout", logout)
   http.HandleFunc("/signup", signup)
+  http.HandleFunc("/logout", logout)
   http.HandleFunc("/search", search)
   http.HandleFunc("/add", add)
+  http.HandleFunc("/accounts", accounts)
+  http.HandleFunc("/expenses", expenses)
 
   log.Println("Listening on:", portStr)
   http.ListenAndServe(portStr, nil)

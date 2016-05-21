@@ -5,6 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3">
 
+    <base href="/">
+
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400">
@@ -51,17 +53,17 @@
         <div class="collapse navbar-collapse">
           <ul id="nav-list" class="nav navbar-nav navbar-left" ng-class="{active: isLoggedIn()}">
             <li>
-              <a ng-class="{active: isActive('/')}" href="#/">
+              <a ng-class="{active: isActive('/')}" href="/">
                 <span class="fa fa-home"></span> Home
               </a>
             </li>
             <li>
-              <a ng-class="{active: isActive('/search')}" href="#search">
+              <a ng-class="{active: isActive('/search')}" href="search">
                 <span class="fa fa-search"></span> Search Past Expenses
               </a>
             </li>
             <li>
-              <a ng-class="{active: isActive('/add')}" href="#add">
+              <a ng-class="{active: isActive('/add')}" href="add">
                 <span class="fa fa-plus-square-o"></span> Add an Expense
               </a>
             </li>

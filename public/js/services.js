@@ -6,8 +6,6 @@ app.factory('Nav', function($http) {
       return $http({
         method: 'POST',
         url: '/logout'
-      }).then(function(res) {
-        return res;
       });
     }
   }
@@ -132,10 +130,6 @@ app.factory('Add', function($http) {
           return str.join("&");
         },
         data: expense
-      }).then(function(res) {
-        return null;
-      }, function(err) {
-        return err.data;
       });
     }
   }
