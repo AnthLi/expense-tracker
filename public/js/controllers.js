@@ -31,6 +31,7 @@ app.controller('navCtrl', function($scope, $location, Nav) {
   $scope.logout = function() {
     Nav.logout().then(function() {
       sessionStorage.removeItem("loggedIn");
+      sessionStorage.removeItem("userEmail");
       $location.path('/login');
     });
   }

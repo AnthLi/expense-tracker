@@ -111,10 +111,10 @@ func getAccount(db *pg.DB, email string) (Account, error) {
   return account, err
 }
 
-// Get the account info, name and email
-func getAccountInfo(db *pg.DB, email string) (Account, error) {
+// Get the user's name based on their email
+func getAccountName(db *pg.DB, email string) (Account, error) {
   var account Account
-  q := `SELECT fname, lname, email FROM Account WHERE email = ?`
+  q := `SELECT fname, lname FROM Account WHERE email = ?`
   _, err := db.Query(&account, q, email)
 
   return account, err

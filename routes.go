@@ -38,7 +38,7 @@ func login(w http.ResponseWriter, r *http.Request) {
   } else if req == "POST" {
     acct, err := getAccount(db, strings.ToLower(r.FormValue("email")))
     if err != nil {
-      httpError(w, fmt.Sprint("%q\n", err), 500)
+      httpError(w, fmt.Sprint("\n", err), 500)
       return
     }
 
@@ -83,13 +83,13 @@ func signup(w http.ResponseWriter, r *http.Request) {
     b := []byte(r.FormValue("password"))
     hashedPassword, err := bcrypt.GenerateFromPassword(b, bcrypt.DefaultCost)
     if err != nil {
-      httpError(w, fmt.Sprint("%q\n", err), 500)
+      httpError(w, fmt.Sprint("\n", err), 500)
       return
     }
 
     acct, err := getAccount(db, strings.ToLower(r.FormValue("email")))
     if err != nil {
-      httpError(w, fmt.Sprint("%q\n", err), 500)
+      httpError(w, fmt.Sprint("\n", err), 500)
       return
     }
 
@@ -107,7 +107,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 
     // Query the new Account into the database
     if err := addAccount(db, form); err != nil {
-      httpError(w, fmt.Sprint("%q\n", err), 500)
+      httpError(w, fmt.Sprint("\n", err), 500)
       return
     }
   }
@@ -167,7 +167,7 @@ func add(w http.ResponseWriter, r *http.Request) {
     }
 
     if err := addExpense(db, form); err != nil {
-      httpError(w, fmt.Sprint("%q\n", err), 500)
+      httpError(w, fmt.Sprint("\n", err), 500)
       return
     }
   }
@@ -183,9 +183,9 @@ func accounts(w http.ResponseWriter, r *http.Request) {
   }
 
   query, _ := url.ParseQuery(r.URL.RawQuery)
-  acct, err := getAccountInfo(db, strings.ToLower(query["email"][0]))
+  acct, err := getAccountName(db, strings.ToLower(query["email"][0]))
   if err != nil {
-    httpError(w, fmt.Sprint("%q\n", err), 500)
+    httpError(w, fmt.Sprint("\n", err), 500)
     return
   }
 
@@ -202,7 +202,7 @@ func expenses(w http.ResponseWriter, r *http.Request) {
   query, _ := url.ParseQuery(r.URL.RawQuery)
   expenses, err := getExpenses(db, strings.ToLower(query["email"][0]))
   if err != nil {
-    httpError(w, fmt.Sprint("%q\n", err), 500)
+    httpError(w, fmt.Sprint("\n", err), 500)
     return
   }
 
