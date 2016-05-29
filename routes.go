@@ -173,7 +173,7 @@ func add(w http.ResponseWriter, r *http.Request) {
   }
 }
 
-// REST API for AngularJS to fetch specific data
+// REST API for AngularJS to fetch data
 
 // Gets the current account's name and email and passes it along as JSON
 func accounts(w http.ResponseWriter, r *http.Request) {

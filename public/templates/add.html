@@ -22,14 +22,14 @@
               <input type="date" class="form-control" required ng-model="expense.date">
             </td>
             <td>
-              <i class="remove-expense fa fa-times" ng-click="remove(expense.index)"></i>
+              <i class="remove-expense fa fa-times" ng-click="removeExpense(expense.index)"></i>
             </td>
           </tr>
         </tbody>
       </table>
 
       <div class="text-center">
-        <input class="expense-button btn btn-primary btn-md" value="Add" ng-click="add()">
+        <input class="expense-button btn btn-primary btn-md" value="Add" ng-click="addExpense()">
         <button class="expense-button btn btn-primary btn-md">Submit</button>
       </div>
     </form>

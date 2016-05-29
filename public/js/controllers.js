@@ -1,6 +1,6 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-app.controller('homeCtrl', function($scope, $http, $location) {
+app.controller('homeCtrl', function($scope, $http, $location, Home) {
   $scope.fname;
 
   // Make the user log in
@@ -8,18 +8,14 @@ app.controller('homeCtrl', function($scope, $http, $location) {
     $location.path('/login');
   }
 
-  $http({
-    method: 'GET',
-    url: '/accounts',
-    params: {email: sessionStorage.userEmail}
-  }).then(function(res) {
+  // Get the user's first name to display on the home page
+  Home.getAccountName().then(function(res) {
     $scope.fname = res.data.fname;
-  }, function(err) {
-    console.log(err.data);
   });
 });
 
 app.controller('navCtrl', function($scope, $location, Nav) {
+  // Labels which nav item is selected
   $scope.isActive = function(viewLocation) {
     return viewLocation === $location.path();
   };
@@ -73,26 +69,30 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
 
   $scope.login = function() {
     Entry.login($scope.form).then(function(res) {
-      $scope.loggedIn = sessionStorage.loggedIn = res.status;
-      $scope.err = res.err;
+      $scope.loggedIn = sessionStorage.loggedIn = true;
 
-      // User logged in, now redirect to home
+      // User logged in, now redirect to the home page
       if ($scope.loggedIn) {
         sessionStorage.userEmail = $scope.form.email;
         $location.path('/');
       }
+    }, function(err) {
+      $scope.loggedIn = sessionStorage.loggedIn = false;
+      $scope.err = err.data;
     });
   }
 
   $scope.signup = function() {
     Entry.signup($scope.form).then(function(res) {
-      $scope.signedUp = res.status;
-      $scope.err = res.err;
+      $scope.signedUp = true;
 
-      // Allow the user to login after signing up
+      // Allow the user to login directly after signing up
       if ($scope.signedUp) {
         $location.path('/login');
       }
+    }, function(err) {
+      $scope.signedUp = false;
+      $scope.err = err.data;
     });
   }
 });
@@ -102,37 +102,20 @@ app.controller('searchCtrl', function($scope, $location, Search) {
 });
 
 app.controller('addCtrl', function($scope, $location, Add) {
-  $scope.expenses = [{
-    name: '',
-    amount: '',
-    date: '',
-    index: 0
-  }];
+  $scope.expenses = Add.expenses();
 
-  $scope.add = function() {
-    $scope.expenses.push({
-      name: '',
-      amount: '',
-      date: '',
-      index: $scope.expenses.length
-    });
-  }
+  $scope.addExpense = function() {
+    Add.addExpense();
+  };
 
-  $scope.remove = function(index) {
-    var newExpenses = [];
-
-    _.each($scope.expenses, function(expense) {
-      if (expense.index != index) {
-        newExpenses.push(expense);
-      }
-    });
-
-    $scope.expenses = newExpenses;
-  }
+  $scope.removeExpense = function(index) {
+    Add.removeExpense(index);
+    $scope.expenses = Add.expenses();
+  };
 
   $scope.submit = function() {
     _.each($scope.expenses, function(expense) {
       Add.submitExpense(expense);
-    })
-  }
+    });
+  };
 });

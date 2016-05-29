@@ -11,6 +11,18 @@ app.factory('Nav', function($http) {
   }
 });
 
+app.factory('Home', function($http) {
+  return {
+    getAccountName: function() {
+      return $http({
+        method: 'GET',
+        url: '/accounts',
+        params: {email: sessionStorage.userEmail}
+      });
+    }
+  }
+});
+
 app.factory('Entry', function($http) {
   return {
     // Source: http://goo.gl/GxKNXk
@@ -44,7 +56,7 @@ app.factory('Entry', function($http) {
 
     login: function(credentials) {
       // Source: http://goo.gl/wPHJrE
-      // Send login POST values to the server
+      // Send login form data to the server
       return $http({
         method: 'POST',
         url: '/login',
@@ -60,22 +72,12 @@ app.factory('Entry', function($http) {
           return str.join("&");
         },
         data: credentials
-      }).then(function(res) {
-        return {
-          status: true,
-          err: null
-        };
-      }, function(err) {
-        return {
-          status: false,
-          err: err.data
-        };
       });
     },
 
     signup: function(form) {
       // Source: http://goo.gl/wPHJrE
-      // Send sign up POST values to the server
+      // Send sign up form data to the server
       return $http({
         method: 'POST',
         url: '/signup',
@@ -91,16 +93,6 @@ app.factory('Entry', function($http) {
           return str.join("&");
         },
         data: form
-      }).then(function(res) {
-        return {
-          status: true,
-          err: null
-        };
-      }, function(err) {
-        return {
-          status: false,
-          err: err.data
-        };
       });
     }
   }
@@ -113,7 +105,44 @@ app.factory('Search', function($http) {
 });
 
 app.factory('Add', function($http) {
+  var expenses = [{
+    name: '',
+    amount: '',
+    date: '',
+    index: 0
+  }];
+
   return {
+    expenses: function() {
+      return expenses;
+    },
+
+    // Simply add another empty expense form with the index equaling the number
+    // of existing expenses
+    addExpense: function() {
+      expenses.push({
+        name: '',
+        amount: '',
+        date: '',
+        index: expenses.length
+      });
+    },
+
+    // Remove the expense based on its index and assign the original array to
+    // the new array of expenses
+    removeExpense: function(index) {
+      var newExpenses = [];
+
+      _.each(expenses, function(expense) {
+        if (expense.index != index) {
+          newExpenses.push(expense);
+        }
+      });
+
+      expenses = newExpenses;
+    },
+
+    // Send the expenses form data to the server
     submitExpense: function(expense) {
       return $http({
         method: 'POST',
