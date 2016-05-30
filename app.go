@@ -48,7 +48,7 @@ func main() {
   http.HandleFunc("/search", search)
   http.HandleFunc("/add", add)
   http.HandleFunc("/accounts", accounts)
-  http.HandleFunc("/expenses", expenses)
+  http.HandleFunc("/expenses/recent", recentExpenses)
 
   log.Println("Listening on:", portStr)
   http.ListenAndServe(portStr, nil)

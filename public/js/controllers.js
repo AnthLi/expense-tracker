@@ -1,19 +1,5 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-app.controller('homeCtrl', function($scope, $http, $location, Home) {
-  $scope.fname;
-
-  // Make the user log in
-  if (!sessionStorage.loggedIn) {
-    $location.path('/login');
-  }
-
-  // Get the user's first name to display on the home page
-  Home.getAccountName().then(function(res) {
-    $scope.fname = res.data.fname;
-  });
-});
-
 app.controller('navCtrl', function($scope, $location, Nav) {
   // Labels which nav item is selected
   $scope.isActive = function(viewLocation) {
@@ -26,8 +12,9 @@ app.controller('navCtrl', function($scope, $location, Nav) {
 
   $scope.logout = function() {
     Nav.logout().then(function() {
-      sessionStorage.removeItem("loggedIn");
-      sessionStorage.removeItem("userEmail");
+      sessionStorage.removeItem('loggedIn');
+      sessionStorage.removeItem('name');
+      sessionStorage.removeItem('email');
       $location.path('/login');
     });
   }
@@ -53,11 +40,33 @@ app.controller('navCtrl', function($scope, $location, Nav) {
   });
 });
 
+app.controller('homeCtrl', function($scope, $http, $location, Home) {
+  $scope.name = sessionStorage.name;
+  $scope.recentExpenses;
+
+  // Make the user log in
+  if (!sessionStorage.loggedIn) {
+    $location.path('/login');
+  }
+
+  // Get the user's full name to display on the home page
+  if (!sessionStorage.name) {
+    Home.getAccountName().then(function(res) {
+      $scope.name = sessionStorage.name = res.data.fname + ' ' + res.data.lname;
+    });
+  }
+
+  Home.getRecentExpenses().then(function(res) {
+    $scope.recentExpenses = res.data;
+  });
+});
+
 // Controller shared between login and sign up pages
 app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   Entry.formFieldAnimations();
+  Entry.resetForm();
 
-  $scope.form = {};
+  $scope.form = Entry.form();
   $scope.loggedIn;
   $scope.signedUp;
   $scope.err;
@@ -68,12 +77,12 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   }
 
   $scope.login = function() {
-    Entry.login($scope.form).then(function(res) {
+    Entry.login().then(function(res) {
       $scope.loggedIn = sessionStorage.loggedIn = true;
 
       // User logged in, now redirect to the home page
       if ($scope.loggedIn) {
-        sessionStorage.userEmail = $scope.form.email;
+        sessionStorage.email = Entry.form().email;
         $location.path('/');
       }
     }, function(err) {
@@ -83,7 +92,7 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   }
 
   $scope.signup = function() {
-    Entry.signup($scope.form).then(function(res) {
+    Entry.signup().then(function(res) {
       $scope.signedUp = true;
 
       // Allow the user to login directly after signing up

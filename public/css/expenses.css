@@ -1,5 +1,5 @@
 .table > tbody > tr > td {
-  border-style: hidden;
+  border-color: #00838f;
 }
 
 #expenses, #expenses thead tr th {
@@ -7,11 +7,23 @@
   text-align: center;
 
   color: #000000;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 #expenses {
   margin-top: 30px;
+}
+
+#expenses tbody tr td {
+  font-size: 16px;
+}
+
+#expenses tbody:before {
+  display: block;
+
+  color: rgba(0, 0, 0, 0);
+  content: "-";
+  line-height: 10px;
 }
 
 .form-control {

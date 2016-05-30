@@ -17,14 +17,45 @@ app.factory('Home', function($http) {
       return $http({
         method: 'GET',
         url: '/accounts',
-        params: {email: sessionStorage.userEmail}
+        params: {email: sessionStorage.email}
+      });
+    },
+
+    getRecentExpenses: function() {
+      return $http({
+        method: 'GET',
+        url: '/expenses/recent',
+        params: {
+          email: sessionStorage.email,
+        }
       });
     }
   }
 });
 
 app.factory('Entry', function($http) {
+  var form = {
+    fname: '',
+    lname: '',
+    email: '',
+    password: ''
+  };
+
   return {
+    form: function() {
+      return form;
+    },
+
+    // Simply reset each value in the form
+    resetForm: function() {
+      form = {
+        fname: '',
+        lname: '',
+        email: '',
+        password: ''
+      };
+    },
+
     // Source: http://goo.gl/GxKNXk
     // Shift the field labels when user input is detected
     formFieldAnimations: function() {
@@ -54,7 +85,7 @@ app.factory('Entry', function($http) {
       });
     },
 
-    login: function(credentials) {
+    login: function() {
       // Source: http://goo.gl/wPHJrE
       // Send login form data to the server
       return $http({
@@ -71,11 +102,11 @@ app.factory('Entry', function($http) {
 
           return str.join("&");
         },
-        data: credentials
+        data: form
       });
     },
 
-    signup: function(form) {
+    signup: function() {
       // Source: http://goo.gl/wPHJrE
       // Send sign up form data to the server
       return $http({
@@ -142,6 +173,7 @@ app.factory('Add', function($http) {
       expenses = newExpenses;
     },
 
+    // Source: http://goo.gl/wPHJrE
     // Send the expenses form data to the server
     submitExpense: function(expense) {
       return $http({

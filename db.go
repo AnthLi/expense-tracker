@@ -132,7 +132,6 @@ func allAccounts(db *pg.DB) ([]Account, error) {
 func addExpense(db *pg.DB, expense *Expense) error {
   q := `INSERT INTO Expense (aid, name, amount, date)
     VALUES (?aid, ?name, ?amount, ?date)`
-
   _, err := db.Exec(q, expense)
   if err != nil {
     return err
@@ -141,13 +140,17 @@ func addExpense(db *pg.DB, expense *Expense) error {
   return nil
 }
 
-// Search expenses based on user requirements
-func getExpenses(db *pg.DB, email string) (Expense, error) {
-  var expense Expense
-  q := `SELECT * FROM Expense e, Account a WHERE a.email = ? AND e.aid = a.aid`
-  _, err := db.Query(&expense, q, email)
+// Get the most recent (last 10) expenses
+func getRecentExpenses(db *pg.DB, email string) ([]Expense, error) {
+  var expenses []Expense
+  q := `SELECT e.name, e.amount, e.date
+    FROM Expense e, Account a
+    WHERE e.aid = a.aid AND a.email = ?
+    ORDER BY e.date DESC
+    LIMIT 10`
+  _, err := db.Query(&expenses, q, email)
 
-  return expense, err
+  return expenses, err
 }
 
 // Retrieve all expenses

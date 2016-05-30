@@ -1,7 +1,23 @@
 <div id="home" class="container">
   <div class="jumbotron">
-    <h1 id="header">Welcome back {{fname}}! Here are your most recent expenses</h1>
+    <h1 id="header">Welcome back {{name}}! Here are your most recent expenses</h1>
 
+    <table id="expenses" class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Date</th>
+        </tr>
+      </thead>
 
+      <tbody>
+        <tr ng-repeat="expense in recentExpenses">
+          <td>{{expense.name}}</td>
+          <td>{{expense.amount}}</td>
+          <td>{{expense.date}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

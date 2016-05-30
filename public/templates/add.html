@@ -1,5 +1,6 @@
 <div id="add-expense" class="container">
   <div class="jumbotron">
+    <div class="expense-msg" ng-class=""></div>
     <form ng-submit="submit()">
       <table id="expenses" class="table">
         <thead>
@@ -29,7 +30,7 @@
       </table>
 
       <div class="text-center">
-        <input class="expense-button btn btn-primary btn-md" value="Add" ng-click="addExpense()">
+        <input type="button" class="expense-button btn btn-primary btn-md" value="Add" ng-click="addExpense()">
         <button class="expense-button btn btn-primary btn-md">Submit</button>
       </div>
     </form>

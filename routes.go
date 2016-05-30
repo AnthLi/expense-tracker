@@ -11,7 +11,7 @@ import (
   "github.com/icza/session"
 )
 
-// Global so it doesn't get reinitialized after refresh
+// Session is global so it doesn't get reinitialized after page refresh
 var sess session.Session
 var sessionCount = 0
 
@@ -36,15 +36,20 @@ func login(w http.ResponseWriter, r *http.Request) {
 
     render(w, "public/index.html", nil)
   } else if req == "POST" {
+    if r.FormValue("email") == "" {
+      httpError(w, "Please enter an email to log in", 401)
+      return
+    }
+
     acct, err := getAccount(db, strings.ToLower(r.FormValue("email")))
     if err != nil {
-      httpError(w, fmt.Sprint("\n", err), 500)
+      httpError(w, fmt.Sprint("", err), 500)
       return
     }
 
     // Account does not exist
     if acct.Email == "" {
-      httpError(w, "That account does not exist!", 401)
+      httpError(w, "That account does not exist", 401)
       return
     }
 
@@ -53,7 +58,7 @@ func login(w http.ResponseWriter, r *http.Request) {
     pBytes := []byte(r.FormValue("password"))
     err = bcrypt.CompareHashAndPassword(hBytes, pBytes)
     if err != nil {
-      httpError(w, "Incorrect Password!", 401)
+      httpError(w, "The password you've entered is incorrect", 401)
       return
     }
 
@@ -79,22 +84,32 @@ func signup(w http.ResponseWriter, r *http.Request) {
 
     render(w, "public/index.html", nil)
   } else if req == "POST" {
+    // Parse the sign up form values to make sure the user filled out all
+    // required fields
+    r.ParseForm()
+    for _, v := range r.Form {
+      if v[0] == "" {
+        httpError(w, "Please fill out the required fields", 401)
+        return
+      }
+    }
+
     // Encrypt the password before saving it to the database
     b := []byte(r.FormValue("password"))
     hashedPassword, err := bcrypt.GenerateFromPassword(b, bcrypt.DefaultCost)
     if err != nil {
-      httpError(w, fmt.Sprint("\n", err), 500)
+      httpError(w, fmt.Sprint("", err), 500)
       return
     }
 
     acct, err := getAccount(db, strings.ToLower(r.FormValue("email")))
     if err != nil {
-      httpError(w, fmt.Sprint("\n", err), 500)
+      httpError(w, fmt.Sprint("", err), 500)
       return
     }
 
     if acct.Email != "" {
-      httpError(w, "That email is already in use!", 401)
+      httpError(w, "The email you've entered is already in use", 401)
       return
     }
 
@@ -107,7 +122,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 
     // Query the new Account into the database
     if err := addAccount(db, form); err != nil {
-      httpError(w, fmt.Sprint("\n", err), 500)
+      httpError(w, fmt.Sprint("", err), 500)
       return
     }
   }
@@ -167,7 +182,7 @@ func add(w http.ResponseWriter, r *http.Request) {
     }
 
     if err := addExpense(db, form); err != nil {
-      httpError(w, fmt.Sprint("\n", err), 500)
+      httpError(w, fmt.Sprint("", err), 500)
       return
     }
   }
@@ -185,24 +200,24 @@ func accounts(w http.ResponseWriter, r *http.Request) {
   query, _ := url.ParseQuery(r.URL.RawQuery)
   acct, err := getAccountName(db, strings.ToLower(query["email"][0]))
   if err != nil {
-    httpError(w, fmt.Sprint("\n", err), 500)
+    httpError(w, fmt.Sprint("", err), 500)
     return
   }
 
   json.NewEncoder(w).Encode(acct)
 }
 
-// Gets the current account's expenses based on user requirements
-func expenses(w http.ResponseWriter, r *http.Request) {
-  if r.URL.Path != "/expenses" {
+// Gets the current account's recent expenses
+func recentExpenses(w http.ResponseWriter, r *http.Request) {
+  if r.URL.Path != "/expenses/recent" {
     notFound(w, r, 404)
     return
   }
 
   query, _ := url.ParseQuery(r.URL.RawQuery)
-  expenses, err := getExpenses(db, strings.ToLower(query["email"][0]))
+  expenses, err := getRecentExpenses(db, strings.ToLower(query["email"][0]))
   if err != nil {
-    httpError(w, fmt.Sprint("\n", err), 500)
+    httpError(w, fmt.Sprint("", err), 500)
     return
   }
 
