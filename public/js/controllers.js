@@ -1,6 +1,6 @@
 var app = angular.module('expense-tracker.controllers', []);
 
-app.controller('navCtrl', function($scope, $location, Nav) {
+app.controller('NavCtrl', function($scope, $location, Nav) {
   // Labels which nav item is selected
   $scope.isActive = function(viewLocation) {
     return viewLocation === $location.path();
@@ -40,14 +40,14 @@ app.controller('navCtrl', function($scope, $location, Nav) {
   });
 });
 
-app.controller('homeCtrl', function($scope, $http, $location, Home) {
-  $scope.name = sessionStorage.name;
-  $scope.recentExpenses;
-
+app.controller('HomeCtrl', function($scope, $http, $location, Home) {
   // Make the user log in
   if (!sessionStorage.loggedIn) {
     $location.path('/login');
   }
+
+  $scope.recentExpenses;
+  $scope.name = sessionStorage.name;
 
   // Get the user's full name to display on the home page
   if (!sessionStorage.name) {
@@ -62,14 +62,14 @@ app.controller('homeCtrl', function($scope, $http, $location, Home) {
 });
 
 // Controller shared between login and sign up pages
-app.controller('entryCtrl', function($scope, $http, $location, Entry) {
+app.controller('EntryCtrl', function($scope, $http, $location, Entry) {
   Entry.formFieldAnimations();
-  Entry.resetForm();
+  Entry.clearForm();
 
-  $scope.form = Entry.form();
   $scope.loggedIn;
   $scope.signedUp;
   $scope.err;
+  $scope.form = Entry.form();
 
   // Redirect to home since the user is already logged in
   if (sessionStorage.loggedIn === 'true') {
@@ -106,11 +106,34 @@ app.controller('entryCtrl', function($scope, $http, $location, Entry) {
   }
 });
 
-app.controller('searchCtrl', function($scope, $location, Search) {
+app.controller('SearchCtrl', function($scope, $location, Search) {
+  // Make the user log in
+  if (!sessionStorage.loggedIn) {
+    $location.path('/login');
+  }
 
+  Search.clearForm()
+
+  $scope.searched;
+  $scope.err;
+  $scope.form = Search.form();
+
+  $scope.search = function() {
+    Search.search().then(function(res) {
+      $scope.searched = true;
+    }, function(err) {
+      $scope.searched = false;
+      $scope.err = err.data;
+    });
+  }
 });
 
-app.controller('addCtrl', function($scope, $location, Add) {
+app.controller('AddCtrl', function($scope, $location, Add) {
+  // Make the user log in
+  if (!sessionStorage.loggedIn) {
+    $location.path('/login');
+  }
+
   $scope.expenses = Add.expenses();
 
   $scope.addExpense = function() {

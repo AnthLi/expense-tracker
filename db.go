@@ -1,12 +1,21 @@
 package main
 
 import (
+  "encoding/json"
+  "errors"
   "io/ioutil"
   "log"
   "strings"
 
   "gopkg.in/pg.v4"
 )
+
+type Credentials struct {
+  Host string     `json:"host"`
+  User string     `json:"user"`
+  Database string `json:"database"`
+  Password string `json:"password"`
+}
 
 type Account struct {
   Aid      int
@@ -24,19 +33,26 @@ type Expense struct {
   Date   string `json:"date"`
 }
 
+type Search struct {
+  Email string `json:"email"`
+  Name  string `json:"amount"`
+  Date  string `json:"date"`
+}
+
 // Establish a connection to the database
 func connect() *pg.DB {
   // Get the database credentials
-  file, err := ioutil.ReadFile("db")
+  file, err := ioutil.ReadFile("db-credentials.json")
   if err != nil {
     log.Println(err)
   }
 
-  cred := strings.Split(string(file), "\n")
+  var cred Credentials
+  json.Unmarshal(file, &cred)
   db := pg.Connect(&pg.Options{
-    Addr: cred[0],
-    User: cred[1],
-    Password: cred[2],
+    Addr: cred.Host,
+    User: cred.User,
+    Password: cred.Password,
   })
 
   return db
@@ -63,14 +79,14 @@ func deleteSchema(db *pg.DB) error {
 // Initialize the Schema
 func createSchema(db *pg.DB) error {
   queries := []string {
-    `CREATE TABLE IF NOT EXISTS Account (
+    `CREATE TABLE IF NOT EXISTS Account(
       aid      SERIAL PRIMARY KEY,
       fname    TEXT NOT NULL,
       lname    TEXT NOT NULL,
       email    VARCHAR(1000) UNIQUE NOT NULL,
       password TEXT NOT NULL
     )`,
-    `CREATE TABLE IF NOT EXISTS Expense (
+    `CREATE TABLE IF NOT EXISTS Expense(
       eid    SERIAL PRIMARY KEY,
       aid    INTEGER REFERENCES Account(aid),
       name   TEXT NOT NULL,
@@ -151,6 +167,34 @@ func getRecentExpenses(db *pg.DB, email string) ([]Expense, error) {
   _, err := db.Query(&expenses, q, email)
 
   return expenses, err
+}
+
+func searchExpenses(db *pg.DB,
+                    email string,
+                    search *Search) ([]Expense, error) {
+  var expenses []Expense
+  q := `SELECT e.name, e.amount, e.date
+    FROM Expense e, Account a
+    WHERE e.aid = a.aid AND a.email = ?email`
+
+  switch {
+    case search.Name != "" && search.Date == "null":
+      q += ` AND a.name = ?name`
+      _, err := db.Query(&expenses, q, search)
+      if err != nil {
+        return nil, err
+      }
+    case search.Name == "" && search.Date != "null":
+      cutoff := strings.Index(search.Date, "00:00:00")
+      search.Date = search.Date[:cutoff - 1]
+
+      q += ` AND e.date = ?date`
+
+    default:
+      return nil, errors.New("Please fill out at least one field")
+  }
+
+  return expenses, nil
 }
 
 // Retrieve all expenses

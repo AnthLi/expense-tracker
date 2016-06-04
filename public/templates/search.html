@@ -1,5 +1,25 @@
 <div id="search-expense" class="container">
   <div class="jumbotron">
+    <div class="missing-field-error" ng-class="{active: searched === false}">
+      {{err}}
+    </div>
 
+    <form id="search-form" ng-submit="search()">
+      <div id="search-fields">
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="text" class="form-control" placeholder="Enter the name of the expense" ng-model="form.name">
+        </div>
+
+        <div class="form-group">
+          <label>Date:</label>
+          <input type="date" class="form-control" ng-model="form.date">
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button class="expense-button btn btn-primary btn-md">Search</button>
+      </div>
+    </form>
   </div>
 </div>

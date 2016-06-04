@@ -43,7 +43,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 
     acct, err := getAccount(db, strings.ToLower(r.FormValue("email")))
     if err != nil {
-      httpError(w, fmt.Sprint("", err), 500)
+      httpError(w, err.Error(), 500)
       return
     }
 
@@ -98,13 +98,13 @@ func signup(w http.ResponseWriter, r *http.Request) {
     b := []byte(r.FormValue("password"))
     hashedPassword, err := bcrypt.GenerateFromPassword(b, bcrypt.DefaultCost)
     if err != nil {
-      httpError(w, fmt.Sprint("", err), 500)
+      httpError(w, err.Error(), 500)
       return
     }
 
     acct, err := getAccount(db, strings.ToLower(r.FormValue("email")))
     if err != nil {
-      httpError(w, fmt.Sprint("", err), 500)
+      httpError(w, err.Error(), 500)
       return
     }
 
@@ -122,7 +122,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 
     // Query the new Account into the database
     if err := addAccount(db, form); err != nil {
-      httpError(w, fmt.Sprint("", err), 500)
+      httpError(w, err.Error(), 500)
       return
     }
   }
@@ -152,7 +152,19 @@ func search(w http.ResponseWriter, r *http.Request) {
 
     render(w, "public/index.html", nil)
   } else if req == "POST" {
+    form := &Search {
+      Email: r.FormValue("email"),
+      Name: r.FormValue("name"),
+      Date: r.FormValue("date"),
+    }
 
+    expenses, err := searchExpenses(db, r.FormValue("email"), form)
+    if err != nil {
+      httpError(w, err.Error(), 403)
+      return
+    }
+
+    fmt.Println("Expenses:", expenses)
   }
 }
 
@@ -182,7 +194,7 @@ func add(w http.ResponseWriter, r *http.Request) {
     }
 
     if err := addExpense(db, form); err != nil {
-      httpError(w, fmt.Sprint("", err), 500)
+      httpError(w, err.Error(), 500)
       return
     }
   }
@@ -200,7 +212,7 @@ func accounts(w http.ResponseWriter, r *http.Request) {
   query, _ := url.ParseQuery(r.URL.RawQuery)
   acct, err := getAccountName(db, strings.ToLower(query["email"][0]))
   if err != nil {
-    httpError(w, fmt.Sprint("", err), 500)
+    httpError(w, err.Error(), 500)
     return
   }
 
@@ -217,7 +229,7 @@ func recentExpenses(w http.ResponseWriter, r *http.Request) {
   query, _ := url.ParseQuery(r.URL.RawQuery)
   expenses, err := getRecentExpenses(db, strings.ToLower(query["email"][0]))
   if err != nil {
-    httpError(w, fmt.Sprint("", err), 500)
+    httpError(w, err.Error(), 500)
     return
   }
 

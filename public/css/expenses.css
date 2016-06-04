@@ -10,7 +10,7 @@
   font-size: 18px;
 }
 
-#expenses {
+#expenses, #search-form {
   margin-top: 30px;
 }
 
@@ -24,6 +24,11 @@
   color: rgba(0, 0, 0, 0);
   content: "-";
   line-height: 10px;
+}
+
+#search-fields {
+  color: #000000;
+  font-size: 18px;
 }
 
 .form-control {

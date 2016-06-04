@@ -23,14 +23,6 @@ func main() {
     log.Println(err)
   }
 
-  port := os.Getenv("PORT")
-
-  if port == "" {
-    port = "8080"
-  }
-
-  portStr := fmt.Sprint(":", port)
-
   // Initialize the session manager
   session.Global = session.NewCookieManagerOptions(
     session.NewInMemStore(),
@@ -49,6 +41,13 @@ func main() {
   http.HandleFunc("/add", add)
   http.HandleFunc("/accounts", accounts)
   http.HandleFunc("/expenses/recent", recentExpenses)
+
+  port := os.Getenv("PORT")
+  if port == "" {
+    port = "8080"
+  }
+
+  portStr := fmt.Sprint(":", port)
 
   log.Println("Listening on:", portStr)
   http.ListenAndServe(portStr, nil)

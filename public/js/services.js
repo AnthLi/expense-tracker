@@ -46,14 +46,11 @@ app.factory('Entry', function($http) {
       return form;
     },
 
-    // Simply reset each value in the form
-    resetForm: function() {
-      form = {
-        fname: '',
-        lname: '',
-        email: '',
-        password: ''
-      };
+    clearForm: function() {
+      form.fname = '';
+      form.lname = '',
+      form.email = '',
+      form.password = ''
     },
 
     // Source: http://goo.gl/GxKNXk
@@ -130,8 +127,40 @@ app.factory('Entry', function($http) {
 });
 
 app.factory('Search', function($http) {
-  return {
+  var form = {
+    email: sessionStorage.email,
+    name: '',
+    date: ''
+  };
 
+  return {
+    form: function() {
+      return form;
+    },
+
+    clearForm: function() {
+      form.name = '';
+      form.date = '';
+    },
+
+    search: function() {
+      return $http({
+        method: 'POST',
+        url: '/search',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        transformRequest: function(obj) {
+          var str = [];
+          for (var p in obj) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+          }
+
+          return str.join("&");
+        },
+        data: form
+      });
+    }
   }
 });
 
